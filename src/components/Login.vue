@@ -4,7 +4,7 @@
       <h1>Please Login</h1>
       <input type="text" hint="Username" v-model="enteredUsername"/>
       <input type="password" hint="Password" v-model="enteredPassword"/>
-      <button @click="login(enteredUsername, enteredPassword)">Login</button>
+      <button @click="login">Login</button>
     </div>
     <div v-if="authenticated">
       <h1>Logged In As {{ username }}</h1>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Login',
@@ -28,10 +28,17 @@ export default {
     authenticated: state => state.auth.authenticated,
     username: state => state.auth.username
   }),
-  methods: mapActions('auth', {
-    login: 'login',
-    logout: 'logout'
-  })
+  methods: {
+    login () {
+      this.$store.dispatch('auth/login', this.enteredUsername, this.enteredPassword)
+      this.enteredPassword = null
+      this.enteredUsername = null
+      // Navigate somewhere?
+    },
+    logout () {
+      this.$store.dispatch('auth/logout')
+    }
+  }
 }
 
 </script>
