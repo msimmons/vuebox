@@ -2,9 +2,10 @@
   <div class="hello">
     <div v-if="!authenticated">
       <h1>Please Login</h1>
-      <input type="text" hint="Username" v-model="enteredUsername"/>
-      <input type="password" hint="Password" v-model="enteredPassword"/>
-      <button @click="login">Login</button>
+      <div><input type="text" hint="Username" v-model="enteredUsername"/></div>
+      <div><input type="password" hint="Password" v-model="enteredPassword"/></div>
+      <div><button @click="login">Login</button></div>
+      <span v-if="error">{{ error.message }}</span>
     </div>
     <div v-if="authenticated">
       <h1>Logged In As {{ username }}</h1>
@@ -21,7 +22,8 @@ export default {
   data () {
     return {
       enteredUsername: null,
-      enteredPassword: null
+      enteredPassword: null,
+      error: null
     }
   },
   computed: mapState({
@@ -30,12 +32,17 @@ export default {
   }),
   methods: {
     login () {
-      this.$store.dispatch('auth/login', this.enteredUsername, this.enteredPassword)
-      this.enteredPassword = null
-      this.enteredUsername = null
-      // Navigate somewhere?
+      this.error = null
+      this.$store.dispatch('auth/login', {username: this.enteredUsername, password: this.enteredPassword}).then(() => {
+        this.enteredPassword = null
+        this.enteredUsername = null
+        this.$router.push({path: '/dashboard'})
+      }).catch((err) => {
+        this.error = err
+      })
     },
     logout () {
+      this.error = null
       this.$store.dispatch('auth/logout')
     }
   }

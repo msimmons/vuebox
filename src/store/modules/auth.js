@@ -1,3 +1,5 @@
+import bus from '@/main'
+
 /**
  * Initial state
  */
@@ -19,15 +21,25 @@ const getters = {
  * Actions
  */
 const actions = {
-  login ({dispatch, commit, state}, username, password) {
-    // do auth(username, password)
-    var timeoutId = setTimeout(function () { dispatch('logout') }, 60000)
-    commit('login', {username: username, timeoutId: timeoutId})
-    // get the profile
-    dispatch('profile/get', null, { root: true })
+  login ({dispatch, commit, state}, {username, password}) {
+    return new Promise((resolve, reject) => {
+      // do auth(username, password)
+      if (password === 'reject') {
+        reject(new Error('Invalid password'))
+      } else {
+        var timeoutId = setTimeout(function () { dispatch('logout') }, 60000)
+        commit('login', {username: username, timeoutId: timeoutId})
+        dispatch('channel/connect', {username: username, token: state.token}, {root: true})
+        dispatch('profile/get', {email: username}, {root: true})
+        resolve()
+      }
+    })
   },
-  logout ({commit, state}) {
+  logout ({commit, dispatch}) {
     commit('logout')
+    dispatch('profile/clear', null, {root: true})
+    dispatch('channel/disconnect', {}, {root: true})
+    bus.$emit('logged-out', {})
   }
 }
 

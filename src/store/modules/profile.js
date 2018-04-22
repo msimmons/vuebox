@@ -12,19 +12,20 @@ const state = {
  * Getters
  */
 const getters = {
-  profileId: state => state.profileId,
-  firstName: state => state.firstName,
-  lastName: state => state.lastName
 }
 
 /**
  * Actions
  */
 const actions = {
-  get ({commit, state}, email) {
+  get ({commit, dispatch, state}, {email}) {
     // get the profile from email
+    dispatch('channel/send', {address: 'get profile', payload: {profileId: state.profileId}}, {root: true})
     var profile = {profileId: '1234', firstName: 'mark', lastName: 'simmons', email: 'mark@cinchfinancial.com'}
     commit('set', {profile: profile})
+  },
+  clear ({commit}) {
+    commit('clear')
   }
 }
 
@@ -37,6 +38,12 @@ const mutations = {
     state.firstName = profile.firstName
     state.lastName = profile.lastName
     state.email = profile.email
+  },
+  clear (state) {
+    state.profileId = null
+    state.firstName = null
+    state.lastName = null
+    state.email = null
   }
 }
 

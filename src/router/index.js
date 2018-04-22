@@ -1,21 +1,50 @@
 import Vue from 'vue'
-import Router from 'vue-router'
-import Login from '@/components/Login'
-import IdDisplay from '@/components/IdDisplay'
+import VueRouter from 'vue-router'
+import Home from '@/pages/Home'
+import Signup from '@/pages/Signup'
+import Login from '@/pages/Login'
+import Dashboard from '@/pages/Dashboard'
+import store from '@/store'
 
-Vue.use(Router)
+Vue.use(VueRouter)
 
-export default new Router({
+const router = new VueRouter({
   routes: [
     {
       path: '/',
+      name: 'Home',
+      component: Home
+    },
+    {
+      path: '/login',
       name: 'Login',
       component: Login
     },
     {
-      path: '/:id',
-      component: IdDisplay,
-      props: (route) => ({ id: route.params.id, option: route.query.option })
+      path: '/signup',
+      name: 'Signup',
+      component: Signup
+    },
+    {
+      path: '/dashboard',
+      name: 'Dashboard',
+      component: Dashboard,
+      beforeEnter: checkAuth
+    },
+    {
+      path: '*',
+      name: 'CatchAll',
+      component: Home
     }
   ]
 })
+
+function checkAuth (to, from, next) {
+  if (!store.state.auth.authenticated) {
+    next('/')
+  } else {
+    next()
+  }
+}
+
+export default router

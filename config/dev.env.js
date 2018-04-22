@@ -3,5 +3,7 @@ const merge = require('webpack-merge')
 const prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
-  NODE_ENV: '"development"'
+  NODE_ENV: '"development"',
+  CHANNEL_URI: '"http://localhost:8080/ws/V1/"',
+  REST_URI: '"http://localhost:8080/api/V1/"'
 })
