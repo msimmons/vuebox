@@ -18,10 +18,9 @@ const getters = {
  * Actions
  */
 const actions = {
-  get ({commit, dispatch, state}, {email}) {
-    // get the profile from email
-    dispatch('channel/send', {address: 'get profile', payload: {profileId: state.profileId}}, {root: true})
-    var profile = {profileId: '1234', firstName: 'mark', lastName: 'simmons', email: 'mark@cinchfinancial.com'}
+  get ({commit, dispatch, state}, {profileId}) {
+    dispatch('channel/send', {address: 'get.profile', payload: {profileId: profileId}}, {root: true})
+    var profile = {profileId: profileId, firstName: 'mark', lastName: 'simmons', email: 'mark@cinchfinancial.com', something: 'foo'}
     commit('set', {profile: profile})
   },
   clear ({commit}) {

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/pages/Home'
 import Signup from '@/pages/Signup'
+import SignupVerify from '@/pages/SignupVerify'
 import Login from '@/pages/Login'
 import Dashboard from '@/pages/Dashboard'
 import store from '@/store'
@@ -26,6 +27,11 @@ const router = new VueRouter({
       component: Signup
     },
     {
+      path: '/signup-verify',
+      name: 'SignupVerify',
+      component: SignupVerify
+    },
+    {
       path: '/dashboard',
       name: 'Dashboard',
       component: Dashboard,
@@ -34,7 +40,7 @@ const router = new VueRouter({
     {
       path: '*',
       name: 'CatchAll',
-      component: Home
+      redirect: '/'
     }
   ]
 })

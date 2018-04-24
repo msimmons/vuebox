@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Logged in as {{ username }}</h1>
+    <h1>Logged in as {{ auth.username }}</h1>
     <h3>{{ profile.profileId }}</h3>
     <h3>{{ profile.firstName }} {{ profile.lastName }}</h3>
     <h3>{{ profile.email }}</h3>
@@ -22,7 +22,6 @@ export default {
     }
   },
   computed: mapState({
-    username: state => state.auth.username,
     profile: state => state.profile,
     auth: state => state.auth
   }),
@@ -31,6 +30,9 @@ export default {
       this.error = null
       this.$store.dispatch('auth/logout')
     }
+  },
+  created: function () {
+    this.$store.dispatch('profile/get', {profileId: this.auth.profileId})
   },
   beforeRouteEnter: function (to, from, next) {
     next(vm => {
