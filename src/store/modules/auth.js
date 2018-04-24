@@ -3,13 +3,16 @@ import bus from '@/main'
 /**
  * Initial state
  */
+let timeoutId = null
+
 const state = {
   username: null,
   profileId: null,
   roles: [],
   authenticated: false,
   token: null,
-  timeoutId: null
+  loggedInAt: null,
+  lastActivity: null
 }
 
 /**
@@ -65,12 +68,23 @@ const actions = {
     dispatch('profile/clear', null, {root: true})
     dispatch('channel/disconnect', {}, {root: true})
     bus.$emit('logged-out', {})
+  },
+  activity ({commit}) {
+    commit('activity')
+  },
+  isExpired ({commit, dispatch}) {
+    console.log('Checking session expiration')
+    if (Date.now() - state.lastActivity >= 60000) {
+      dispatch('logout')
+    } else {
+      timeoutId = setTimeout(function () { dispatch('isExpired') }, 30000)
+    }
   }
 }
 
 function doLogin (dispatch, commit, username, profileId, token) {
-  var timeoutId = setTimeout(function () { dispatch('logout') }, 60000)
-  commit('login', {username: username, profileId: profileId, timeoutId: timeoutId, token: token})
+  timeoutId = setTimeout(function () { dispatch('isExpired') }, 30000)
+  commit('login', {username: username, profileId: profileId, token: token})
 }
 
 /**
@@ -80,20 +94,25 @@ const mutations = {
   signup (state, {username}) {
     state.username = username
   },
-  login (state, {username, profileId, timeoutId, token}) {
+  login (state, {username, profileId, token}) {
     state.username = username
     state.profileId = profileId
     state.authenticated = true
-    state.timeoutId = timeoutId
     state.token = token
+    state.loggedInAt = Date.now()
+    state.lastActivity = state.loggedInAt
   },
   logout (state) {
-    if (state.timeoutId) clearTimeout(state.timeoutId)
+    if (timeoutId) clearTimeout(timeoutId)
     state.username = null
     state.profileId = null
     state.authenticated = false
-    state.timeoutId = null
     state.token = null
+    state.loggedInAt = null
+    state.lastActivity = null
+  },
+  activity (state) {
+    state.lastActivity = Date.now()
   }
 }
 
