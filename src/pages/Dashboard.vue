@@ -13,6 +13,7 @@
 <script>
 import { mapState } from 'vuex'
 import LogoutButton from '@/components/LogoutButton'
+import Authenticated from '@/mixins/Authenticated'
 
 export default {
   name: 'Dashboard',
@@ -34,10 +35,8 @@ export default {
   created: function () {
     this.$store.dispatch('profile/get', {profileId: this.auth.profileId})
   },
-  beforeRouteEnter: function (to, from, next) {
-    next(vm => {
-      if (!vm.auth.authenticated) vm.$router.push('/')
-    })
+  mixins: {
+    Authenticated
   },
   components: {
     LogoutButton
