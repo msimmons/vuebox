@@ -13,7 +13,7 @@
 
 export default {
   name: 'SignupVerify',
-  data () {
+  data: function () {
     return {
       verifyCode: null,
       error: null

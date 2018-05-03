@@ -5,7 +5,7 @@ import Signup from '@/pages/Signup'
 import SignupVerify from '@/pages/SignupVerify'
 import Login from '@/pages/Login'
 import Dashboard from '@/pages/Dashboard'
-// import store from '@/store'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -34,7 +34,8 @@ const router = new VueRouter({
     {
       path: '/dashboard',
       name: 'Dashboard',
-      component: Dashboard
+      component: Dashboard,
+      beforeEnter: checkAuth
     },
     {
       path: '*',
@@ -44,7 +45,6 @@ const router = new VueRouter({
   ]
 })
 
-/*
 function checkAuth (to, from, next) {
   if (!store.state.auth.authenticated) {
     next('/')
@@ -52,6 +52,5 @@ function checkAuth (to, from, next) {
     next()
   }
 }
-*/
 
 export default router

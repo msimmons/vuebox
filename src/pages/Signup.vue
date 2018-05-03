@@ -17,7 +17,7 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'Signup',
-  data () {
+  data: function () {
     return {
       firstName: null,
       email: null,

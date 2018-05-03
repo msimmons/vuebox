@@ -13,11 +13,10 @@
 <script>
 import { mapState } from 'vuex'
 import LogoutButton from '@/components/LogoutButton'
-import Authenticated from '@/mixins/Authenticated'
 
 export default {
   name: 'Dashboard',
-  data () {
+  data: function () {
     return {
       error: null
     }
@@ -34,9 +33,6 @@ export default {
   },
   created: function () {
     this.$store.dispatch('profile/get', {profileId: this.auth.profileId})
-  },
-  mixins: {
-    Authenticated
   },
   components: {
     LogoutButton

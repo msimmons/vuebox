@@ -39,11 +39,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       dispatch('rest/verify', {username: state.username, verifyCode: verifyCode}, {root: true}).then(response => {
         doLogin(dispatch, commit, state.username, response.profileId, response.token)
-        dispatch('channel/connect', {username: state.username, token: response.token}, {root: true}).then(response => {
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
+        dispatch('channel/connect', {token: response.token}, {root: true})
+        resolve()
       }).catch(error => {
         reject(error)
       })
@@ -53,11 +50,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       dispatch('rest/login', {username: username, password: password}, {root: true}).then(response => {
         doLogin(dispatch, commit, username, response.profileId, response.token)
-        dispatch('channel/connect', {username: username, token: response.token}, {root: true}).then(response => {
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
+        dispatch('channel/connect', {username: username, token: response.token}, {root: true})
+        resolve()
       }).catch(error => {
         reject(error)
       })

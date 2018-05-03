@@ -4,6 +4,6 @@ const prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  CHANNEL_URI: '"http://localhost:8080/ws/V1/"',
+  CHANNEL_URI: '"http://localhost:9000/example/ws/V1/"',
   REST_URI: '"http://localhost:8080/api/V1/"'
 })

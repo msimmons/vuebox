@@ -19,9 +19,13 @@ const getters = {
  */
 const actions = {
   get ({commit, dispatch, state}, {profileId}) {
-    dispatch('channel/send', {address: 'get.profile', payload: {profileId: profileId}}, {root: true})
-    var profile = {profileId: profileId, firstName: 'mark', lastName: 'simmons', email: 'mark@cinchfinancial.com', something: 'foo'}
-    commit('set', {profile: profile})
+    dispatch('channel/send', {address: 'example.ws1.whatever', payload: {profileId: profileId}}, {root: true}).then(response => {
+      console.log(response)
+      var profile = {profileId: profileId, firstName: 'mark', lastName: 'simmons', email: 'mark@cinchfinancial.com', something: 'foo'}
+      commit('set', {profile: profile})
+    }).catch(error => {
+      console.log(error)
+    })
   },
   clear ({commit}) {
     commit('clear')

@@ -19,7 +19,7 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'Login',
-  data () {
+  data: function () {
     return {
       enteredUsername: null,
       enteredPassword: null,
@@ -38,6 +38,7 @@ export default {
         this.enteredUsername = null
         this.$router.push({path: '/dashboard'})
       }).catch((err) => {
+        this.enteredPassword = null
         this.error = err
       })
     },
