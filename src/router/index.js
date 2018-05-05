@@ -5,7 +5,10 @@ import Signup from '@/pages/Signup'
 import SignupVerify from '@/pages/SignupVerify'
 import Login from '@/pages/Login'
 import Dashboard from '@/pages/Dashboard'
+import Start1 from '@/pages/Start1'
+import Start2 from '@/pages/Start2'
 import store from '@/store'
+import AFlow from './flows/AFlow'
 
 Vue.use(VueRouter)
 
@@ -35,7 +38,18 @@ const router = new VueRouter({
       path: '/dashboard',
       name: 'Dashboard',
       component: Dashboard,
-      beforeEnter: checkAuth
+      beforeEnter: beforeEnter,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/start1',
+      name: 'Start1',
+      component: Start1
+    },
+    {
+      path: '/start2',
+      name: 'Start2',
+      component: Start2
     },
     {
       path: '*',
@@ -44,6 +58,14 @@ const router = new VueRouter({
     }
   ]
 })
+
+router.addRoutes(AFlow)
+
+function beforeEnter (to, from, next) {
+  if (to.meta.requiresAuth) {
+    checkAuth(to, from, next)
+  }
+}
 
 function checkAuth (to, from, next) {
   if (!store.state.auth.authenticated) {
