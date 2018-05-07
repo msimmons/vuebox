@@ -5,6 +5,9 @@
     <h3>{{ profile.firstName }} {{ profile.lastName }}</h3>
     <h3>{{ profile.email }}</h3>
     <div>
+      <transaction-list/>
+    </div>
+    <div>
       <logout-button/>
     </div>
   </div>
@@ -13,6 +16,7 @@
 <script>
 import { mapState } from 'vuex'
 import LogoutButton from '@/components/LogoutButton'
+import TransactionList from '@/components/TransactionList'
 
 export default {
   name: 'Dashboard',
@@ -35,7 +39,8 @@ export default {
     this.$store.dispatch('profile/get', {profileId: this.auth.profileId})
   },
   components: {
-    LogoutButton
+    LogoutButton,
+    TransactionList
   }
 }
 </script>
