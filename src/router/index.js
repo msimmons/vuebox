@@ -17,29 +17,31 @@ const router = new VueRouter({
     {
       path: '/',
       name: 'Home',
-      component: Home
+      component: Home,
+      meta: { isOpen: true }
     },
     {
       path: '/login',
       name: 'Login',
-      component: Login
+      component: Login,
+      meta: { isOpen: true }
     },
     {
       path: '/signup',
       name: 'Signup',
-      component: Signup
+      component: Signup,
+      meta: { isOpen: true }
     },
     {
       path: '/signup-verify',
       name: 'SignupVerify',
-      component: SignupVerify
+      component: SignupVerify,
+      meta: { isOpen: true }
     },
     {
       path: '/dashboard',
       name: 'Dashboard',
-      component: Dashboard,
-      beforeEnter: beforeEnter,
-      meta: { requiresAuth: true }
+      component: Dashboard
     },
     {
       path: '/start1',
@@ -61,18 +63,16 @@ const router = new VueRouter({
 
 router.addRoutes(AFlow)
 
-function beforeEnter (to, from, next) {
-  if (to.meta.requiresAuth) {
-    checkAuth(to, from, next)
-  }
-}
-
-function checkAuth (to, from, next) {
-  if (!store.state.auth.authenticated) {
+router.beforeEach((to, from, next) => {
+  if (needsAuth(to, from)) {
     next('/')
   } else {
     next()
   }
+})
+
+function needsAuth (to, from) {
+  return !to.meta.isOpen && !store.state.auth.authenticated
 }
 
 export default router
