@@ -22,7 +22,7 @@ export default {
   methods: {
     submit: function () {
       this.error = null
-      this.$store.dispatch('auth/verify', {verifyCode: this.verifyCode}, {root: true}).then(response => {
+      this.$store.dispatch('auth/verify', {verifyCode: this.verifyCode}, {root: true}).then(() => {
         this.$router.push('/dashboard')
       }).catch(error => {
         this.error = error

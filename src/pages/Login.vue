@@ -10,6 +10,7 @@
     <div v-if="authenticated">
       <h1>Logged In As {{ username }}</h1>
       <button @click="logout">Logout</button>
+      <div v-if="error">{{ error.message }}</div>
     </div>
   </div>
 </template>

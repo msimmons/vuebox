@@ -1,3 +1,5 @@
+import { channel } from '@/service/channel'
+
 /**
  * Initial state
  */
@@ -19,7 +21,7 @@ const getters = {
  */
 const actions = {
   get ({commit, dispatch, state}, {profileId}) {
-    dispatch('channel/send', {address: 'example.ws1.whatever', payload: {profileId: profileId}}, {root: true}).then(response => {
+    channel.send('example.ws1.whatever', {profileId: profileId}).then(response => {
       console.log(response)
       var profile = {profileId: profileId, firstName: 'mark', lastName: 'simmons', email: 'mark@cinchfinancial.com', something: 'foo'}
       commit('set', {profile: profile})

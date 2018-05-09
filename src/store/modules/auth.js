@@ -1,4 +1,8 @@
 import bus from '@/main'
+import { RestApi } from '@/service/rest-api'
+import { channel } from '@/service/channel'
+
+let restApi = new RestApi(process.env.REST_URI)
 
 /**
  * Initial state
@@ -27,7 +31,7 @@ const getters = {
 const actions = {
   signup ({dispatch, commit, state}, {name, username, password}) {
     return new Promise((resolve, reject) => {
-      dispatch('rest/signup', {name: name, username: username, password: password}, {root: true}).then(response => {
+      restApi.signup(name, username, password).then(response => {
         commit('signup', {username: username})
         resolve(response)
       }).catch(error => {
@@ -37,10 +41,13 @@ const actions = {
   },
   verify ({dispatch, commit, state}, {verifyCode}) {
     return new Promise((resolve, reject) => {
-      dispatch('rest/verify', {username: state.username, verifyCode: verifyCode}, {root: true}).then(response => {
+      restApi.verify(state.username, verifyCode).then(response => {
         doLogin(dispatch, commit, state.username, response.profileId, response.token)
-        dispatch('channel/connect', {token: response.token}, {root: true})
-        resolve()
+        channel.connect(response.token).then(connected => {
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
       }).catch(error => {
         reject(error)
       })
@@ -48,10 +55,13 @@ const actions = {
   },
   login ({dispatch, commit, state}, {username, password}) {
     return new Promise((resolve, reject) => {
-      dispatch('rest/login', {username: username, password: password}, {root: true}).then(response => {
+      restApi.login(username, password).then(response => {
         doLogin(dispatch, commit, username, response.profileId, response.token)
-        dispatch('channel/connect', {username: username, token: response.token}, {root: true})
-        resolve()
+        channel.connect(response.token).then(connected => {
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
       }).catch(error => {
         reject(error)
       })
@@ -60,7 +70,7 @@ const actions = {
   logout ({commit, dispatch}) {
     commit('logout')
     dispatch('profile/clear', null, {root: true})
-    dispatch('channel/disconnect', {}, {root: true})
+    channel.disconnect()
     bus.$emit('logged-out', {})
   },
   activity ({commit}) {
