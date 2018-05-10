@@ -1,8 +1,9 @@
 import bus from '@/main'
-import { RestApi } from '@/service/rest-api'
+import { AuthApi } from '@/service/auth-api'
 import { channel } from '@/service/channel'
 
-let restApi = new RestApi(process.env.REST_URI)
+console.log('creating auth api')
+let authApi = new AuthApi(process.env.REST_URI)
 
 /**
  * Initial state
@@ -31,7 +32,7 @@ const getters = {
 const actions = {
   signup ({dispatch, commit, state}, {name, username, password}) {
     return new Promise((resolve, reject) => {
-      restApi.signup(name, username, password).then(response => {
+      authApi.signup(name, username, password).then(response => {
         commit('signup', {username: username})
         resolve(response)
       }).catch(error => {
@@ -41,7 +42,7 @@ const actions = {
   },
   verify ({dispatch, commit, state}, {verifyCode}) {
     return new Promise((resolve, reject) => {
-      restApi.verify(state.username, verifyCode).then(response => {
+      authApi.verify(state.username, verifyCode).then(response => {
         doLogin(dispatch, commit, state.username, response.profileId, response.token)
         channel.connect(response.token).then(connected => {
           resolve()
@@ -55,7 +56,7 @@ const actions = {
   },
   login ({dispatch, commit, state}, {username, password}) {
     return new Promise((resolve, reject) => {
-      restApi.login(username, password).then(response => {
+      authApi.login(username, password).then(response => {
         doLogin(dispatch, commit, username, response.profileId, response.token)
         channel.connect(response.token).then(connected => {
           resolve()
