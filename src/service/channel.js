@@ -14,7 +14,6 @@ export class Channel {
     this.token = token
     return new Promise((resolve, reject) => {
       this.eventBus = new EventBus(this.uri + '?jwt=' + token)
-      this.eventBus.enableReconnect(true)
       this.eventBus.onclose = (error) => {
         this.disconnect()
         reject(new Error(error.reason))
@@ -24,6 +23,7 @@ export class Channel {
       }
       this.eventBus.onopen = () => {
         console.log('Connected')
+        this.eventBus.enableReconnect(true)
         this.eventBus.onclose = (close) => {
           if (!close.wasClean) {
             console.log('Channel closed: ' + JSON.stringify(close))
