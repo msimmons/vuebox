@@ -1,4 +1,4 @@
-import { channel } from '@/service/channel'
+import { channel } from '@/service'
 
 /**
  * Initial state

@@ -1,8 +1,10 @@
 import axios from 'axios'
+import settle from 'axios/lib/core/settle'
+import { AuthApi } from './auth-api'
+import { Channel } from './channel'
 
 const mockAdapter = (config) => {
   return new Promise((resolve, reject) => {
-    console.log('Mock Handling', config)
     var response = {
       data: {},
       status: 200,
@@ -11,16 +13,18 @@ const mockAdapter = (config) => {
       config: config,
       request: {}
     }
-    resolve(response)
-    // settle(resolve, reject, response)
+    settle(resolve, reject, response)
   })
 }
 
 const useMock = process.env.USE_MOCK
 
 if (useMock) {
-  console.log('Setting global mock adapter')
+  console.log('Using Mock services ')
   axios.defaults.adapter = mockAdapter
 }
 
-export default useMock
+const authApi = new AuthApi(process.env.REST_URI)
+const channel = new Channel(process.env.CHANNEL_URI)
+
+export { authApi, channel }

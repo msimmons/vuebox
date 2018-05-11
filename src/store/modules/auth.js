@@ -1,9 +1,5 @@
 import bus from '@/main'
-import { AuthApi } from '@/service/auth-api'
-import { channel } from '@/service/channel'
-
-console.log('creating auth api')
-let authApi = new AuthApi(process.env.REST_URI)
+import { authApi, channel } from '@/service'
 
 /**
  * Initial state

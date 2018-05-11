@@ -1,6 +1,6 @@
 import EventBus from 'vertx3-eventbus-client'
 
-class Channel {
+export class Channel {
   uri = ''
   token = ''
   eventBus
@@ -31,9 +31,6 @@ class Channel {
         }
         resolve()
       }
-      this.eventBus.onreconnect = () => {
-        console.log('Reconnecting...')
-      }
     })
   }
 
@@ -55,6 +52,15 @@ class Channel {
     })
   }
 
+  publish (address, payload) {
+  }
+
+  register (address, callback) {
+  }
+
+  unregister (address, callback) {
+  }
+
   disconnect () {
     if (!this.eventBus) return
     try {
@@ -65,5 +71,3 @@ class Channel {
     this.eventBus = null
   }
 }
-
-export let channel = new Channel(process.env.CHANNEL_URI)
