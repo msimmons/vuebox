@@ -72,7 +72,7 @@ router.beforeEach((to, from, next) => {
 })
 
 function needsAuth (to, from) {
-  return !to.meta.isOpen && !store.state.auth.authenticated
+  return !to.meta.isOpen && !store.state.auth.authenticated && process.env.USE_AUTH
 }
 
 export default router
