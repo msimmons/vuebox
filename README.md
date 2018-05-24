@@ -2,6 +2,14 @@
 
 > Vue Sandbox
 
+Things I'm trying
+
+- Vue Router
+- Vuex
+- Vertx event bus bridge over websocket
+- Axios for rest
+- Maybe elementUI components
+
 ## Build Setup
 
 ``` bash

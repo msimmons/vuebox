@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import TheFlow from '@/mixins/TheFlow'
+import ContextAwareRouter from '@/mixins/ContextAwareRouter'
 
 export default {
   name: 'Stop1',
@@ -15,7 +15,7 @@ export default {
     }
   },
   mixins: [
-    TheFlow
+    ContextAwareRouter
   ]
 }
 

@@ -2,28 +2,28 @@ import Stop1 from '@/pages/Stop1'
 import Stop2 from '@/pages/Stop2'
 import Stop3 from '@/pages/Stop3'
 
-function generateFlow (start) {
-  return [
-    {
-      path: `${start}/stop1`,
-      name: `${start}-Stop1`,
-      component: Stop1,
-      meta: { back: `${start}/stop1`, next: `${start}/stop2` }
-    },
-    {
-      path: `${start}/stop2`,
-      name: `${start}-Stop2`,
-      component: Stop2,
-      meta: { back: `${start}/stop2`, next: `${start}/stop3` }
-    },
-    {
-      path: `${start}/stop3`,
-      name: `${start}-Stop3`,
-      component: Stop3,
-      meta: { back: `${start}/stop2`, next: `${start}` }
-    }
-  ]
-}
-const flows = generateFlow('/start1').concat(generateFlow('/start2'))
+const flow = [
+  {
+    path: '/:context/stop1',
+    name: 'Stop1',
+    component: Stop1,
+    props: true,
+    meta: { back: '', next: 'stop2' }
+  },
+  {
+    path: '/:context/stop2',
+    name: 'Stop2',
+    component: Stop2,
+    props: true,
+    meta: { back: 'stop1', next: 'stop3' }
+  },
+  {
+    path: '/:context/stop3',
+    name: 'Stop3',
+    component: Stop3,
+    props: true,
+    meta: { back: 'stop2', next: '' }
+  }
+]
 
-export default flows
+export default flow
