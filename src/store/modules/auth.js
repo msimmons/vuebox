@@ -26,43 +26,20 @@ const getters = {
  * Actions
  */
 const actions = {
-  signup ({dispatch, commit, state}, {name, username, password}) {
-    return new Promise((resolve, reject) => {
-      authApi.signup(name, username, password).then(response => {
-        commit('signup', {username: username})
-        resolve(response)
-      }).catch(error => {
-        reject(error)
-      })
-    })
+  async signup ({dispatch, commit, state}, {name, username, password}) {
+    let response = await authApi.signup(name, username, password)
+    commit('signup', {username: username})
+    return response
   },
-  verify ({dispatch, commit, state}, {verifyCode}) {
-    return new Promise((resolve, reject) => {
-      authApi.verify(state.username, verifyCode).then(response => {
-        doLogin(dispatch, commit, state.username, response.profileId, response.token)
-        channel.connect(response.token).then(connected => {
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
-      }).catch(error => {
-        reject(error)
-      })
-    })
+  async verify ({dispatch, commit, state}, {verifyCode}) {
+    let response = await authApi.verify(state.username, verifyCode)
+    doLogin(dispatch, commit, state.username, response.profileId, response.token)
+    await channel.connect(response.token)
   },
-  login ({dispatch, commit, state}, {username, password}) {
-    return new Promise((resolve, reject) => {
-      authApi.login(username, password).then(response => {
-        doLogin(dispatch, commit, username, response.profileId, response.token)
-        channel.connect(response.token).then(connected => {
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
-      }).catch(error => {
-        reject(error)
-      })
-    })
+  async login ({dispatch, commit, state}, {username, password}) {
+    let response = await authApi.login(username, password)
+    doLogin(dispatch, commit, username, response.profileId, response.token)
+    await channel.connect(response.token)
   },
   logout ({commit, dispatch}) {
     commit('logout')

@@ -8,6 +8,9 @@
       <transaction-list/>
     </div>
     <div>
+      <the-table/>
+    </div>
+    <div>
       <logout-button/>
     </div>
   </div>
@@ -17,6 +20,7 @@
 import { mapState } from 'vuex'
 import LogoutButton from '@/components/LogoutButton'
 import TransactionList from '@/components/TransactionList'
+import TheTable from '@/components/TheTable'
 
 export default {
   name: 'Dashboard',
@@ -40,7 +44,8 @@ export default {
   },
   components: {
     LogoutButton,
-    TransactionList
+    TransactionList,
+    TheTable
   }
 }
 </script>
